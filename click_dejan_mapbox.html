@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.22.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.22.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+<style>
+#map canvas {
+        cursor: crosshair;
+    }
+#panel {
+      position: absolute;
+      z-index: 1010101;
+      display: block;
+      width: 240px;
+      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.50);
+      color: white;
+      height: 90%;
+      padding: 0 10px;
+    }
+</style>
+
+<div id='map'></div>
+<div id='panel'></div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiaXNrYW5kYXJibHVlIiwiYSI6ImNpazE3MTJldjAzYzZ1Nm0wdXZnMGU2MGMifQ.i3E1_b9QXJS8xXuPy3OTcg';
+var bounds = [
+    [-180, -70.68392799015035], // Southwest coordinates
+    [180.91058699000139, 80.87764500765852]  // Northeast coordinates
+];
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v9',
+    center: [0, 20],
+    zoom: 1.5,
+    maxBounds: bounds
+});
+var popup = new mapboxgl.Popup({
+    closeButton: false
+});
+var centroids = 'https://cdn.rawgit.com/Dejan11/Olympics/master/Olympics_centroids_final1.geojson';
+var polygons = 'https://cdn.rawgit.com/Dejan11/Olympics/master/Olympics_polygons_final1.geojson';
+var photo = 'https://cdn.rawgit.com/Dejan11/Olympics/master/rings.svg';
+var gold = 'https://cdn.rawgit.com/Dejan11/Olympics/master/gold.png?raw=true';
+var silver = 'https://cdn.rawgit.com/Dejan11/Olympics/master/silver.png?raw=true';
+var bronze = 'Olympics/bronze.png';
+map.on('load', function () {
+    map.addSource("states", {
+        "type": "geojson",
+        "data": polygons
+    });
+    map.addSource('origins', {
+      "type": "geojson",
+      "data": centroids
+    });
+    map.addLayer({
+        "id": "centroids",
+        "type": "circle",
+        "source": "origins",
+        "paint": {
+            "circle-opacity": 0.25,
+            "circle-radius": {
+                property: 'total',
+                stops: [
+                  [{zoom: 0,  value: 0},  0],
+                  [{zoom: 0,  value: 1}, 1],
+                  [{zoom: 0,  value: 2}, 2],
+                  [{zoom: 0,  value: 3}, 3],
+                  [{zoom: 0,  value: 4}, 4],
+                  [{zoom: 0,  value: 5}, 5],
+                  [{zoom: 0, value: 6},  6],
+                  [{zoom: 0, value: 7},  7],
+                  [{zoom: 0, value: 8},  8],
+                  [{zoom: 0, value: 9},  9],
+                  [{zoom: 0, value: 10}, 10],
+                  [{zoom: 0, value: 11}, 11],
+                  [{zoom: 0, value: 12},  12],
+                  [{zoom: 0, value: 13},  13],
+                  [{zoom: 0, value: 14},  14],
+                  [{zoom: 0, value: 15},  15],
+                  [{zoom: 0, value: 16},  16],
+                  [{zoom: 0, value: 17},  17],
+                  [{zoom: 0, value: 18},  18],
+                  [{zoom: 0, value: 19},  19],
+                  [{zoom: 0, value: 20},  20],
+                  [{zoom: 0, value: 21},  21],
+                  [{zoom: 0, value: 22},  22],
+                  [{zoom: 0, value: 23},  23],
+                  [{zoom: 0, value: 24},  24],
+                  [{zoom: 0, value: 25},  25],
+                  [{zoom: 0, value: 26},  26],
+                  [{zoom: 0, value: 27},  27],
+                  [{zoom: 0, value: 28},  28],
+                  [{zoom: 0, value: 29},  29],
+                  [{zoom: 0, value: 30},  30],
+                  [{zoom: 0, value: 31},  31],
+                  [{zoom: 0, value: 32},  32],
+                  [{zoom: 0, value: 33},  33],
+                  [{zoom: 0, value: 34},  34],
+                  [{zoom: 0, value: 35},  35],
+                  [{zoom: 0, value: 36},  36],
+                  [{zoom: 0, value: 37},  37],
+                  [{zoom: 0, value: 38},  38],
+                  [{zoom: 0, value: 39},  39],
+                  [{zoom: 0, value: 40},  40],
+                  [{zoom: 0, value: 41},  41],
+                  [{zoom: 0, value: 42},  42],
+                  [{zoom: 0, value: 56},  56],
+                  [{zoom: 0, value: 67},  67],
+                  [{zoom: 0, value: 70},  70],
+                  [{zoom: 0, value: 121},  121],
+            ]},
+            "circle-color": "#FFA500"
+        }
+    });
+    map.addLayer({
+        "id": "state-fills",
+        "type": "fill",
+        "source": "states",
+        "layout": {},
+        "paint": {
+            "fill-color": "#627BC1",
+            "fill-opacity": 0
+        }
+    });
+    map.addLayer({
+        "id": "state-borders",
+        "type": "line",
+        "source": "states",
+        "layout": {},
+        "paint": {
+            "line-color": "#627BC1",
+            "line-width": 1,
+            "line-opacity": 0
+        }
+    });
+    map.addLayer({
+        "id": "route-hover",
+        "type": "fill",
+        "source": "states",
+        "layout": {},
+        "paint": {
+            "fill-color": "#90caf9",
+            "fill-opacity": 1
+        },//#c5cae9 #4527a0
+        "filter": ["==", "admin", ""]
+    });
+	map.addLayer({
+	"id": "counties-highlighted",
+	"type": "fill",
+	"source": "states",
+	"paint": {
+		"fill-outline-color": "#484896",
+		"fill-color": "#6e599f",
+		"fill-opacity": 0.5
+		},
+		"filter": ["in", "total", ""]
+	}, 'place-city-sm'); // Place polygon under these labels.
+	
+    // When the user moves their mouse over the page, we look for features
+    // at the mouse position (e.point) and within the states layer (states-fill).
+    // If a feature is found, then we'll update the filter in the route-hover
+    // layer to only show that state, thus making a hover effect.
+    		map.on('click', function (e) {
+    			var coords = [[(e.point.x-10),(e.point.y-10)],[(e.point.x+10),(e.point.y+10)]];
+    			var features = map.queryRenderedFeatures(coords, { layers: ['state-fills'] });
+				
+    			if(features.length > 0) {
+    					var props = features[0].properties;
+    					map.setFilter('route-hover', ["==", "admin", props.admin]);
+    					document.getElementById('panel').innerHTML =
+    							'<div><h1>' + props.admin + '<br>IO rank: '+ props.rank.replace(null, "-")+'</br></h1></div>' + '<hr>' +
+    							'<div><h2> Population: ' + (props.population/1000000).toFixed(2) + ' m</h2></div>' +
+    							'<div><h2> GDP(PPP): $ ' + props.gdp_ppp + '</h2></div>' +
+    							'<div><h2><font size="4.5"> Medals: ' +props.total+'  Athletes: ' + props.Athletes + '</font></h2></div>' +
+								'<div><p> <img src= "https://raw.githubusercontent.com/Dejan11/Olympics/master/gold.png" width="35px" align = "middle"/><font color="gold">'+ props.gold +'<img  align = "middle" src= "https://raw.githubusercontent.com/Dejan11/Olympics/master/silver.png" width="28px"/></font><font color="silver">'+ props.silver +'<img  align = "middle" src= "https://raw.githubusercontent.com/Dejan11/Olympics/master/bronze.png" width="22px"/></font><font color="#CD7F32">' + props.bronze+'</font></p></div>' +
+								'<div><img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b1/Olympic_Rings.svg/1280px-Olympic_Rings.svg.png" width="200px"/></div>'+
+								'<div><h3> Author: D. Popovic </h3></div>' ;
+    		    }  else {
+    					map.setFilter('route-hover', ["==", "admin", ""]);
+            }
+			map.setFilter('counties-highlighted', ['==', 'total', features[0].properties.total]);
+			
+        });
+    map.on("mousemove", function(e) {
+        var features = map.queryRenderedFeatures(e.point, { layers: ["state-fills"] });
+        if (features.length) {
+            map.setFilter("route-hover", ["==", "admin", features[0].properties.admin]);
+        } else {
+            map.setFilter("route-hover", ["==", "admin", ""]);
+        }
+		popup.setLngLat(e.lngLat)
+					.setText(features[0].properties.admin)
+					.addTo(map);
+    });
+    // Reset the route-hover layer's filter when the mouse leaves the map
+    map.on("mouseout", function() {
+        map.setFilter("route-hover", ["==", "admin", ""]);
+		
+    });
+    map.addControl(new mapboxgl.Navigation());
+});
+</script>
+
+</body>
+</html>

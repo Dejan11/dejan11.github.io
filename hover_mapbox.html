@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.22.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.22.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+<style>
+.map-overlay {
+    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+    border-radius: 3px;
+    position: absolute;
+    width: 25%;
+    top: 10px;
+    left: 10px;
+    padding: 10px;
+    display: none;
+}
+</style>
+
+<div id='map'></div>
+<div id='map-overlay' class='map-overlay'></div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiaXNrYW5kYXJibHVlIiwiYSI6ImNpazE3MTJldjAzYzZ1Nm0wdXZnMGU2MGMifQ.i3E1_b9QXJS8xXuPy3OTcg';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v9',
+    center: [0, 0],
+    zoom: 1
+});
+var overlay = document.getElementById('map-overlay');
+
+var popup = new mapboxgl.Popup({
+    closeButton: false
+});
+var centroids = 'https://cdn.rawgit.com/Dejan11/Olympics/master/Olympics_centroids_upd.geojson';
+var polygons = 'https://cdn.rawgit.com/Dejan11/Olympics/master/Olympics_polygons_upd.geojson';
+var photo = 'https://cdn.rawgit.com/Dejan11/Olympics/master/rings.svg';
+map.on('load', function () {
+    map.addSource("states", {
+        "type": "geojson",
+        "data": polygons
+    });
+
+    map.addLayer({
+        "id": "state-fills",
+        "type": "fill",
+        "source": "states",
+        "layout": {},
+        "paint": {
+            "fill-color": "#627BC1",
+            "fill-opacity": 0.1
+        }
+    });
+
+    map.addLayer({
+        "id": "state-borders",
+        "type": "line",
+        "source": "states",
+        "layout": {},
+        "paint": {
+            "line-color": "#627BC1",
+            "line-width": 1,
+			"fill-opacity": 0
+        }
+    });
+
+    map.addLayer({
+        "id": "route-hover",
+        "type": "fill",
+        "source": "states",
+        "layout": {},
+        "paint": {
+            "fill-color": "#90caf9",
+            "fill-opacity": 1
+        },//#c5cae9 #4527a0
+        "filter": ["==", "admin", ""]
+    });
+	map.addLayer({
+        "id": "counties-highlighted",
+        "type": "fill",
+        "source": "states",
+        "paint": {
+            "fill-outline-color": "#484896",
+            "fill-color": "#6e599f",
+            "fill-opacity": 0.75
+        },
+        "filter": ["in", "total", ""]
+    }, 'place-city-sm'); // Place polygon under these labels.
+	
+    // When the user moves their mouse over the page, we look for features
+    // at the mouse position (e.point) and within the states layer (states-fill).
+    // If a feature is found, then we'll update the filter in the route-hover
+    // layer to only show that state, thus making a hover effect.
+    map.on("mousemove", function(e) {
+        var features = map.queryRenderedFeatures(e.point, { 
+			layers: ["state-fills"]
+		});
+		//point finger
+		map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+		
+        if (features.length) {
+            map.setFilter("route-hover", ["==", "admin", features[0].properties.admin]);
+
+        } else {
+            map.setFilter("route-hover", ["==", "admin", ""]);
+        }
+		overlay.innerHTML = '';
+		
+		
+		var relatedFeatures = map.querySourceFeatures('states', {
+            filter: ['all',['==', 'total', features[0].properties.total]]
+			
+        });
+		//var count = document.createElement('div');
+		//title.textContent = 'Number of countries (' + relatedFeatures.length + ' found)';
+		//var populationSum = relatedFeatures.reduce(function(memo, feature) {
+       //     return memo + feature.properties.population;
+       // }, 0);
+        var title = document.createElement('strong');
+		title.textContent = 'Number of countries (' + relatedFeatures.length + ' found)';
+		//var arrayA = "";
+		//for (var i = 0; i <= relatedFeatures.length; i++) { console.log(arrayA+=(relatedFeatures[i].properties.admin));}
+        
+		var population = document.createElement('div');
+        population.textContent = 'Total population: ' + features[0].properties.pop_wb;
+
+        overlay.appendChild(title);
+        overlay.appendChild(population);
+        overlay.style.display = 'block';
+		
+		//for ( i = 0; i<relatedFeatures.length ;i++) {arrayA.push(relatedFeatures[i].properties.admin));}
+
+		//for (var i=0; i < 3; i++) alert(i);
+		//var selected = map.queryRenderedFeatures('counties-highlighted', {
+		//	filter: ['in', 'total', features[0].properties.total]
+		//});
+		//map.setFilter('counties-highlighted', ['in', 'total', features[0].properties.total]);
+		//console.log(map.setFilter('counties-highlighted', ['in', 'total', features[0].properties.total]).length)
+		map.setFilter('counties-highlighted', ['==', 'total', features[0].properties.total]);
+
+        popup.setLngLat(e.lngLat)
+            .setText(features[0].properties.admin +' - Total: '+ features[0].properties.total)
+            .addTo(map);
+    });
+		//map.setFilter("route-hover", ['in', "admin", feature.properties.gold]);
+	
+    // Reset the route-hover layer's filter when the mouse leaves the map
+    //map.on("mouseout", function() {
+    //    map.setFilter("route-hover", ["==", "admin", ""]);
+    //});
+    map.addControl(new mapboxgl.Navigation());
+});
+</script>
+
+</body>
+</html>

@@ -165,11 +165,11 @@
     #about-close {
       border: 1px solid #eee;
       position: relative;
-      right: 0px;
+      right: 5%;
       margin-top: 20px;
       margin-right: 20px;
       float: right;
-      top: 0px;
+      top: 5%;
       width: 38px;
       height: 38px;
       border-radius: 19px;
@@ -1675,9 +1675,15 @@ setTimeout(function() {
         document.getElementById('interest-close').addEventListener('click', function () {
           listingEl.innerHTML = '';
 
-            // map.setLayoutProperty('uni', 'visibility', 'visible');
-            map.setLayoutProperty('uni-EMJD', 'visibility', 'visible');
-            map.setLayoutProperty('uni-EMJMD', 'visibility', 'visible');
+            // depending on which CHECKBOX is checked rpeviously, it will be loaded
+            var c = document.getElementById('uni-EMJMD');
+            var d = document.getElementById('uni-EMJD');
+            if (c.checked) {
+              map.setLayoutProperty('uni-EMJMD', 'visibility', 'visible');
+            } else if (d.checked) {
+              map.setLayoutProperty('uni-EMJD', 'visibility', 'visible');
+            }
+
             map.setLayoutProperty('uni_select', 'visibility', 'none');
             map.setLayoutProperty('uni_icon', 'visibility', 'none');
 
@@ -1772,39 +1778,6 @@ map.on('moveend', function() {
  // Call this function on initialization
  // passing an empty array to render an empty state
  renderListings([]);
-
-
- // map.on('mousemove', function(e) {
- //
- //  //  var visibility = map.getLayoutProperty('uni', 'visibility');
- //      var country = document.getElementById('country');
- //      var city = document.getElementById('city');
- //
- //     var features = map.queryRenderedFeatures(e.point, {
- //         layers: ['uni-EMJMD','uni-EMJD','uni_icon','uni_select']
- //     });
- //
- //     // Change the cursor style as a UI indicator.
- //     map.getCanvas().style.cursor = features.length ? 'pointer' : '';
- //
- //     if (!features.length) {
- //         popup.remove();
- //         return;
- //     }
- //
- //     var feature = features[0];
- //
- //     // Populate the popup and set its coordinates
- //     // based on the feature found.
- //    //  popup.setLngLat(feature.geometry.coordinates)
- //    //      .setHTML('<div><b>' + feature.properties.title + '</div></b>' + '<div>' + ' (' + feature.properties.code + ')' + '</div>' + '<div>' + feature.properties.uni
- //    //      +  '</div></b>' +  '<div>' + feature.properties.city + ', ' + feature.properties.country + '</div>')
- //    //      .addTo(map);
- //     popup.setLngLat(feature.geometry.coordinates)
- //         .setHTML('<div><b>' + feature.properties.city + ', ' + feature.properties.country + '</div>')
- //         .addTo(map);
- // });
-
 
   map.on('mousemove', function(e) {
 

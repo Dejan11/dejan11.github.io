@@ -527,39 +527,16 @@ overflow: auto;
    background-color: none;
 }
 .link:hover span#acr {display:none;}
-.link:hover span#crs {display:block;}
+.link:hover span#stat  {display:none;}
+/*.link:hover span#ong {display:none;}*/
+
+.link:hover span#crs {display:inline;color: yellow;}
 #crs {
   display:none;
 }
-.link#crs:hover {display:block;}
-
-/*.label {
-    padding: 1px 3px 2px;
-    font-size: 9.75px;
-    font-weight: bold;
-    color: #ffffff;
-    text-transform: uppercase;
-    white-space: nowrap;
-    background-color: #bfbfbf;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    text-decoration: none;
-}
-.label.success {
-    background-color: #46a546;
-}
+.link#crs:hover {display:inline;}
 
 
-.itemH:hover a  span{
-  display: none;
-}
-.itemH:hover a :after{
-  content: 'ADD';
-}*/
-
-
-/*.link:hover:before {content:" Reply";}*/
 
 #header {
   position: absolute;
@@ -795,19 +772,20 @@ overflow: auto;
     }
 
     #about-close {
-      position: fixed;
       border: 1px solid #eee;
-      right: 0px;
-      margin-top: 15px;
-      margin-right: 15px;
+      position: relative;
+      right: 5%;
+      margin-top: 20px;
+      margin-right: 20px;
       float: right;
-      top: 0px;
-      width: 28px;
-      height: 28px;
-      border-radius: 14px;
+      top: 5%;
+      width: 38px;
+      height: 38px;
+      border-radius: 19px;
       background: url('close.svg') center center no-repeat;
       cursor: pointer;
       opacity: 0.6;
+      font-size: 13px;
     }
 
     #about-close:hover {
@@ -816,7 +794,7 @@ overflow: auto;
 
     #about-map {
      text-align: left;
-     margin: 20px 0;
+     margin: 25px 0;
     }
 
     #about-map-button {
@@ -865,7 +843,7 @@ overflow: auto;
   <div id = 'about-close'></div>
   <div id='about-content'>
     <div id='about-text'>
-    <div id = 'about-header'>EMA web map</div>
+    <div id = 'about-header'>Erasmus Mundus Course Web Map</div>
       <p>The Erasmus Mundus Association is a professional network for Erasmus Mundus students and graduates. This webmap serves as a search tool for graduate programs by location and links prospective students to program webpages.</p>
       <p>There are two modes: <b>Program</b> and <b>City</b>.  The first mode allows one to filter the programs in mapview by program name and displays markers for all locations of an individual program. The second displays programs and links to individual webpages by city.  The default filter button is 'All', which displays both Master's and PhD programs.  To see only Master's or PhD programs, click the corresponding button.  Discontinued programs are marked <b>D/C</b>. For more details, please see the list of all <a href='http://eacea.ec.europa.eu/erasmus_mundus/results_compendia/selected_projects_action_1_master_courses_en.php'>Erasmus Mundus Masters Courses</a>.</p>
       <p>We hope that this program exploration tool will serve as a resource for students, faculty, and EMA staff.</p>
@@ -2541,7 +2519,7 @@ map.on('moveend', function() {
         } else {
 
         popup.setLngLat(feature.geometry.coordinates)
-            .setHTML('<div><b>' + feature.properties.city  + '</b></div>')
+            .setHTML('<div><b>' + feature.properties.city  + ', ' + feature.properties.country + '</b></div>')
             .addTo(map);
 
         }
@@ -2652,7 +2630,7 @@ var feature = features[0];
                     var title = acro_title[(courses[i])];
 
                     html += "<div class='link'>";
-                    html += "<a href='" + websites[i] + "'style='color: rgb(0,255,0)'; target='_blank';><span id = 'crs'>"+ title +"</span><span id ='acr' >" + courses[i] + "</span></a>" + "  " + '<div style ="display:inline; margin-left: 5px; opacity: 0.9; color: RoyalBlue;"><i>' + dstats(status[i]) + '</i></div>' + '<div style ="display:inline; margin-left: 5px; opacity: 0.6; color:LightCoral;"><i>' + hideUndf(ongoing[i]) + '</i></div>';
+                    html += "<a href='" + websites[i] + "'style='color: rgb(0,255,0)'; target='_blank';><span id = 'crs'>"+ title +"</span><span id ='acr'>" + courses[i] + "</span></a>" + " " + '<div style ="display:inline; margin-left: 5px; opacity: 0.9; color: RoyalBlue;"><i><span id ="stat">' + dstats(status[i]) + '</span></i></div>' + '<div style ="display:inline; margin-left: 5px; opacity: 0.6; color:LightCoral;"><i><span id ="ong">' + hideUndf(ongoing[i]) + '</span></i></div>';
                     html += "</div>\n";
 
                   }

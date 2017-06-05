@@ -108,7 +108,8 @@
       display: none;
       left: 50%;
       width: auto;
-      bottom: 1%;
+      top:1%;
+      /*bottom: 1%;*/
       text-align: center;
       padding: 5px 10px;
       border-radius: 10px;
@@ -855,7 +856,7 @@ overflow: auto;
       <div id = 'about-map'><div id = 'about-map-button'>Back to the map</div></div>
       <div id='about-credits'>
         <br/>Map engine — <a href='https://www.mapbox.com/mapbox-gl-js/'>Mapbox GL JS</a>
-        <p><br/>Development: <a href="https://www.linkedin.com/in/alexander-tedeschi-4a006938">Alexander Tedeschi</a>  |  Data Processing:  <a href="https://de.linkedin.com/in/dejanpopovic11">Dejan Popović</a>  |  Conceptual design: <a href="https://www.linkedin.com/in/ruxandraaelenei/">Ruxandra Aelenei</a></p>
+        <p><br/>Development | Data Processing | Design: <a href="https://de.linkedin.com/in/dejanpopovic11">Dejan Popović</a>, <a href="https://www.linkedin.com/in/alexander-tedeschi-4a006938">Alexander Tedeschi</a>, <a href="https://www.linkedin.com/in/ruxandraaelenei/">Ruxandra Aelenei</a></p>
     </div>
   </div>
 </div>
@@ -1098,6 +1099,8 @@ function renderListings(features) {
 
 //Program mode - on click zoom to extent with fitBounds
             item.addEventListener('click', function(){
+              //close title for better visibility
+              $("#ema_title").hide();
 
 //Zoom to extent
               map.fitBounds([[xmin,ymin], [xmax, ymax]]);
@@ -1118,7 +1121,7 @@ function renderListings(features) {
               document.getElementById("myspan").textContent= prop.code;
               document.getElementById("program_title").style.display = "inline-block";
 
-              $("#interest").fadeIn("slow")
+              $("#interest").fadeIn("slow");
 
               $("#interest").children().not('#interest-close').remove();
               $("#interest-close").appendTo("#interest");
@@ -2319,7 +2322,8 @@ setTimeout(function() {
 
         document.getElementById('interest-close').addEventListener('click', function () {
           listingEl.innerHTML = '';
-
+          //show ema title
+          $("#ema_title").show();
 
           var city = document.getElementById('city');
           var program = document.getElementById('program');

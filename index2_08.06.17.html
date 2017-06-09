@@ -82,6 +82,8 @@
 
 .dropdown-content a:hover {background-color: #f1f1f1}
 
+
+
 .dropdown:hover .dropdown-content {
     display: block;
     border-radius: 5px;
@@ -95,6 +97,7 @@
 .dropdown:hover .dropbtn {
     background-color: rgba(243,123,33, 0.5);
 }
+
 
     #program_title{
       position: absolute;
@@ -356,12 +359,12 @@
     width: 75%;
 }
 
-  .dropdown-inverse {
+  /*.dropdown-inverse {
     overflow-x: hidden;
     max-height: 200px;
     height: auto;
     background: '#ff4b1f';
-  }
+  }*/
   .mapboxgl-popup {
     position: absolute;
     top: 0;
@@ -394,11 +397,11 @@
   background: '#ff4b1f';
 
   }
-  .dropdown-toggle{
+  /*.dropdown-toggle{
 
     border-radius: 5px;
     background: '#ff4b1f';
-  }
+  }*/
 
   #drops {
 
@@ -914,8 +917,8 @@ overflow: auto;
 <div class="dropdown">
 <button class="dropbtn" id="ongoing">Period</button>
 <div class="dropdown-content" id="ongoing-content">
-<a href="#">Past</a>
-<a href="#">Current</a>
+<a href="#">Discontinued</a>
+<a href="#">Ongoing</a>
 </div>
 </div>
 </div>
@@ -1002,8 +1005,9 @@ setTimeout(function(){
 }, 1500);
 
 // add map
+mapboxgl.accessToken = 'pk.eyJ1IjoiaXNrYW5kYXJibHVlIiwiYSI6ImNpazE3MTJldjAzYzZ1Nm0wdXZnMGU2MGMifQ.i3E1_b9QXJS8xXuPy3OTcg';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZ2VvbXVuZHVzIiwiYSI6ImNqM3BoMDVlYjAwam8zMnBmNm1ndWs3bnYifQ.McVUJig2reapiExh7EPOpw';
+/*mapboxgl.accessToken = 'pk.eyJ1IjoiZ2VvbXVuZHVzIiwiYSI6ImNqM3BoMDVlYjAwam8zMnBmNm1ndWs3bnYifQ.McVUJig2reapiExh7EPOpw';*/
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/iskandarblue/ciy0v11q8004c2sp6qutlk0qp',
@@ -1863,7 +1867,8 @@ setTimeout(function() {
       for (var i = 0; i < linksB.length; i++) {
       	linksB[i].addEventListener('click',function() {
 
-          btnB.textContent = this.textContent
+          /*preventing texContent change in button*/
+          /*btnB.textContent = this.textContent*/
           ongoing = this.textContent
           var city = document.getElementById('city');
           var program = document.getElementById('program');
@@ -1873,7 +1878,7 @@ setTimeout(function() {
           console.log(ongoing)
           console.log(degree)
 
-          if (ongoing === 'Past'){
+          if (ongoing === 'Discontinued'){
 
             if(degree === 'Degree' || degree === 'All'){
 
@@ -1965,7 +1970,7 @@ setTimeout(function() {
         for (var i = 0; i < links.length; i++) {
         	links[i].addEventListener('click',function() {
 
-            btn.textContent = this.textContent;
+            /*btn.textContent = this.textContent;*/
             degree = this.textContent
             var city = document.getElementById('city');
             var program = document.getElementById('program');
@@ -1984,12 +1989,12 @@ setTimeout(function() {
               if(program.className === 'mode-selected'){
                 ff.placeholder = 'Filter results by program name'
 
-                if (ongoing === 'Current'){
+                if (ongoing === 'Ongoing'){
 
                 var new_Filter = ["all",["==", 'ongoing2015_2017', 1],["==", 'cat', 'EMJMD']];
                 map.setFilter('uni', new_Filter);
 
-              } else if (ongoing === 'Past') {
+              } else if (ongoing === 'Discontinued') {
 
                 var new_Filter = ["all",["!=", 'ongoing2015_2017', 1],["==", 'cat', 'EMJMD']];
                 map.setFilter('uni', new_Filter);
@@ -2045,9 +2050,9 @@ setTimeout(function() {
             if(program.className === 'mode-selected'){
               ff.placeholder = 'Filter results by program name'
 
-        if(ongoing === 'Past'){
+        if(ongoing === 'Discontinued'){
               map.setFilter('uni', ['!=', 'ongoing2015_2017', 1])}
-          else if(ongoing === 'Current'){
+          else if(ongoing === 'Ongoing'){
               map.setFilter('uni', ['==', 'ongoing2015_2017', 1])
           } else {
               map.setFilter('uni', ['!=', 'cat', 'fff'])
@@ -2139,7 +2144,7 @@ setTimeout(function() {
 
             }, delayMillis);
 
-          } else if (degree ==='Masters' && ongoing === 'Past'){
+          } else if (degree ==='Masters' && ongoing === 'Discontinued'){
             if (program.className === 'mode-selected'){
 
             var new_Filter = ["all",["!=", 'ongoing2015_2017', 1],["==", 'cat', 'EMJMD']];
@@ -2183,7 +2188,7 @@ setTimeout(function() {
             }, delayMillis);
 
 
-          } else if (degree === "PhD" && ongoing === 'Current'){
+          } else if (degree === "PhD" && ongoing === 'Ongoing'){
 
             filterEl.value = '';
             listingEl.innerHTML = '';
@@ -2227,7 +2232,7 @@ setTimeout(function() {
 
             }, delayMillis);
 
-          } else if (degree === "PhD" && ongoing === 'Past'){
+          } else if (degree === "PhD" && ongoing === 'Discontinued'){
 
         filterEl.value = '';
         listingEl.innerHTML = '';
@@ -2342,7 +2347,7 @@ setTimeout(function() {
 
             if(ongoing === 'Period'){
                 map.setFilter('uni', ['!=', 'cat', 'fff'])
-            } else if (ongoing === 'Current'){
+            } else if (ongoing === 'Ongoing'){
               map.setFilter('uni', ['==', 'ongoing2015_2017', 1])
             } else {
               map.setFilter('uni', ['!=', 'ongoing2015_2017', 1])
@@ -2352,7 +2357,7 @@ setTimeout(function() {
 
             if(ongoing === 'Period'){
                 map.setFilter('uni', ['==', 'cat', 'EMJD'])
-            } else if (ongoing === 'Current'){
+            } else if (ongoing === 'Ongoing'){
               var new_Filter = ["all",["==", 'ongoing2015_2017', 1],['==', 'cat', 'EMJD']];
               map.setFilter('uni', new_Filter)
             } else {
@@ -2364,7 +2369,7 @@ setTimeout(function() {
 
             if(ongoing === 'Period'){
                 map.setFilter('uni', ['==', 'cat', 'EMJMD'])
-            } else if (ongoing === 'Current'){
+            } else if (ongoing === 'Ongoing'){
               var new_Filter = ["all",["==", 'ongoing2015_2017', 1],['==', 'cat', 'EMJMD']];
               map.setFilter('uni', new_Filter)
             } else {
@@ -2432,7 +2437,7 @@ map.on('moveend', function() {
          // Clear the input container
          filterEl.value = '';
 
-         // Store the current features in sn `programs` variable to
+         // Store the Ongoing features in sn `programs` variable to
          // later use for filtering on `keyup`.
          programs = sorted;
      }

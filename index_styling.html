@@ -1209,6 +1209,10 @@ function renderListings(features) {
 
             item.addEventListener('mouseover', function() {
 
+                var codeFilter =  "Roma"
+                map.setFilter("city_select", ["==", "code", codeFilter]);
+               map.setLayoutProperty('city_select', 'visibility', 'visible')
+
 /*Get all links from properties and put them in the popup!*/
   function htmlFromProps(props) {
     var city = "";
@@ -1419,6 +1423,18 @@ function addDataLayer(){
       "layout":{
         "visibility": "none",
         "icon-image": "marker-15_blackwhite",
+        "icon-offset": [0, -7.5],
+        "icon-allow-overlap": true,
+        "icon-size":.8
+      }
+  });
+  map.addLayer({
+      "id": "city_select",
+      "type": "symbol",
+      "source": "city",
+      "layout":{
+        "visibility": "none",
+        "icon-image": "marker_red",
         "icon-offset": [0, -7.5],
         "icon-allow-overlap": true,
         "icon-size":.8
